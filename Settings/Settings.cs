@@ -6,34 +6,52 @@ using System.Threading.Tasks;
 
 namespace Settings
 {
-    public abstract class Settings{
-	
-	//Ctor
-        public Settings()
+    public abstract class SettingsBase
+    {
+
+        //Ctor
+        public SettingsBase()
         {
 
         }
 
-	// Opens the settings file. Must be overriden
-	public abstract void openSettingsFile();
-	
-	// Closes the settings file. Maybe done in dtor
-	public virtual void closeSettingsFile();
+        // Opens the settings file. Must be overriden
+        public virtual void openSettingsFile() 
+        {
+            FileOpen = true;
+        }
 
-	/// <summary>
-	/// Saves the settings file.
-	/// </summary>
-	/// <returns>RESULT</returns>
-	public virtual void saveSettingsFile();
-	
-	/// <summary>
-	/// Deletes the settings file.
-	/// </summary>
-	/// <returns>RESULT</returns>
-	public virtual void deleteSettingsFile();
+        // Closes the settings file. Maybe done in dtor
+        public virtual void closeSettingsFile()
+        {
+            FileOpen = false;
+        }
 
+        // Saves the settings file.
+        public virtual void saveSettingsFile()
+        {
 
-	protected readonly string m_filePath;
-	bool fileOpen = false;
-};
+        }
+
+        // Deletes the settings file.
+        public virtual void deleteSettingsFile()
+        {
+
+        }
+
+        //Properties
+        public bool FileOpen { get; set; }
+
+        //Protected Members - Make most protected as this class is abstract
+        protected readonly string m_filePath;
+    };
+
+    public class SchematicSettings : SettingsBase
+    {
+        public SchematicSettings()
+        {
+            base.openSettingsFile();
+        }
+    }
+
 }

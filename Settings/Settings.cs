@@ -10,7 +10,7 @@ namespace Settings
     {
 
         //Ctor
-        public SettingsBase()
+        protected SettingsBase()
         {
 
         }
@@ -39,12 +39,14 @@ namespace Settings
 
         }
 
+        public 
+
         //Properties
         public bool FileOpen { get; set; }
 
         //Protected Members - Make most protected as this class is abstract
-        protected readonly string m_filePath;
-    };
+        public string FilePath { get; set; }
+    }; 
 
     public class SchematicSettings : SettingsBase
     {

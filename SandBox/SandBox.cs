@@ -8,11 +8,10 @@ using System.Runtime.Serialization;
 namespace PCB.SandBox
 {
     [Serializable()]    //Set this attribute to all the classes that want to serialize
-    public class Employee : ISerializable //derive your class from ISerializable
+    public class Employee //derive your class from ISerializable
     {
         public int EmpId;
         public string EmpName;
-        public string test2;
 
         //Default constructor
         public Employee()
@@ -20,12 +19,12 @@ namespace PCB.SandBox
             EmpId = 0;
             EmpName = null;
         }
-
+        /*
         public Employee(SerializationInfo info, StreamingContext ctxt)
         {
             //Get the values from info and assign them to the appropriate properties
-            EmpId = (int)info.GetValue("EmployeeId", typeof(int));
-            EmpName = (String)info.GetValue("EmployeeName", typeof(string));
+            EmpId = (int) info.GetValue("EmployeeId", typeof (int));
+            EmpName = (String) info.GetValue("EmployeeName", typeof (string));
         }
 
         //Serialization function.
@@ -36,7 +35,7 @@ namespace PCB.SandBox
             // then you should read the same with "EmployeeId"
             info.AddValue("EmployeeId", EmpId);
             info.AddValue("EmployeeName", EmpName);
-        }
+        }*/
     }
   
 }

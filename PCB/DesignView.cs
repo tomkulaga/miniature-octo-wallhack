@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Xml.Serialization;
 using PCB.SandBox;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -20,22 +21,28 @@ namespace PCB
         {
             InitializeComponent();
 
-            Employee mp = new Employee();
+            var mp = new Employee();
             Stream stream;
             BinaryFormatter bformatter;
-            /*            mp.EmpId = 10;
-                        mp.EmpName = "Omkumar";
+            mp.EmpId = 456;
+            mp.EmpName = "sdfsdfsdf";
 
+            var ss = new XmlSerializer(typeof(Employee));
 
-                        stream = File.Open("EmployeeInfo.osl", FileMode.Create);
-                         bformatter = new BinaryFormatter();
+            TextWriter tt = new StreamWriter(@"test.xml");
+            ss.Serialize(tt, mp);
 
-                        Console.WriteLine("Writing Employee Information");
-                        bformatter.Serialize(stream, mp);
-                        stream.Close();
+            tt.Close();
+            /*
+            stream = File.Open("EmployeeInfo.osl", FileMode.Create);
+            bformatter = new BinaryFormatter();
 
-                        Console.ReadLine();
-                        */
+            Console.WriteLine("Writing Employee Information");
+            bformatter.Serialize(stream, mp);
+            stream.Close();
+
+            Console.ReadLine();
+
             mp = null;
 
             //Open the file written above and read values from it.
@@ -45,6 +52,12 @@ namespace PCB
             Console.WriteLine("Reading Employee Information");
             mp = (Employee)bformatter.Deserialize(stream);
             stream.Close();
+            */
+            mp = null;
+
+            FileStream read = new FileStream(@"test.xml",FileMode.Open,FileAccess.Read,FileShare.Read);
+
+            mp = (ss.Deserialize(read)) as Employee;
 
             Console.WriteLine("Employee Id: {0}", mp.EmpId.ToString());
             Console.WriteLine("Employee Name: {0}", mp.EmpName);

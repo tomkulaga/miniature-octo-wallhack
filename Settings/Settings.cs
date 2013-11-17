@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using PCB.Settings.Interfaces;
 
 namespace PCB.Settings
 {
-    public abstract class SettingsBase
+    public class Settings
     {
 
         //protect Ctor to make this a singleton
-        protected SettingsBase()
+        protected Settings()
         {
+            //Initialises all the sub settings
+        }
 
+        public Settings InitialiseSettings()
+        {
+            return new Settings();
         }
 
         //Properties
@@ -20,14 +27,26 @@ namespace PCB.Settings
 
         //Protected Members - Make most protected as this class is abstract
         public string FilePath { get; set; }
-    }; 
+    };
 
-    public class SchematicSettings : SettingsBase
+    //Each of the subclasses will recursively add its settings to the main dictionary
+    internal class PcbSettings : ISettings
     {
-        public SchematicSettings()
-        {
-
-        }
+        
     }
 
+    internal class FileSettings : ISettings
+    {
+        
+    }
+
+    internal class SchematicSettings : ISettings
+    {
+        
+    }
+
+    internal class GeneralSettings : ISettings
+    {
+        
+    }
 }

@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exporters.cs" />
-    <Compile Include="FileInfo.cs" />
+    <Compile Include="FileDetials.cs" />
     <Compile Include="FileIO.cs" />
     <Compile Include="Importers.cs" />
     <Compile Include="Interfaces.cs" />

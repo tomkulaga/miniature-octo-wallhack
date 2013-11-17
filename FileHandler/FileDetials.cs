@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PCB.FileHandlers
 {
-    public class FileInfo
+    public class FileDetails
     {
-        //Store the filename for the file that hosts the FileInfo object
+        //Store the filename for the file that hosts the FileDetials object
         public string FileName { get; set; }
 
     }

@@ -16,6 +16,10 @@ namespace PCB.FileHandlers.FileIO
         //IConverter specifies and interface for converting the loaded.saved file
         public static void SaveToFile(ISerializable fileToSave, FileInfo info, IConverter dataConverter)
         {
+            if (dataConverter == null)
+            {
+
+            }
         }
 
         public static void LoadFromFile(ISerializable fileToLoad, FileInfo info, IConverter dataConverter)

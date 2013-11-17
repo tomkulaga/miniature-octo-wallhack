@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Binding
+namespace PCB.Binding
 {
     public interface IObserver<in T>
         where T : EventArgs

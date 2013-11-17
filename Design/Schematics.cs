@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-/*
-namespace PCB_App
-{
+
+namespace PCB.Design
+{/*
     class Schematics
     {
     };
@@ -66,5 +66,5 @@ namespace PCB_App
     {
         Point tom;
     };
+  * */
 }
-*/

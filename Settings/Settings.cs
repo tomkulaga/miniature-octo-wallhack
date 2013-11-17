@@ -4,42 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Settings
+namespace PCB.Settings
 {
     public abstract class SettingsBase
     {
 
-        //Ctor
+        //protect Ctor to make this a singleton
         protected SettingsBase()
         {
 
         }
-
-        // Opens the settings file. Must be overriden
-        public virtual void openSettingsFile() 
-        {
-            FileOpen = true;
-        }
-
-        // Closes the settings file. Maybe done in dtor
-        public virtual void closeSettingsFile()
-        {
-            FileOpen = false;
-        }
-
-        // Saves the settings file.
-        public virtual void saveSettingsFile()
-        {
-
-        }
-
-        // Deletes the settings file.
-        public virtual void deleteSettingsFile()
-        {
-
-        }
-
-        public 
 
         //Properties
         public bool FileOpen { get; set; }
@@ -52,7 +26,7 @@ namespace Settings
     {
         public SchematicSettings()
         {
-            base.openSettingsFile();
+
         }
     }
 

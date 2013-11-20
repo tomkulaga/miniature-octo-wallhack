@@ -11,8 +11,9 @@ namespace PCB.Settings.Interfaces
     [System.Xml.Serialization.XmlInclude(typeof(FileSettings))]
     [System.Xml.Serialization.XmlInclude(typeof(GeneralSettings))]
     [System.Xml.Serialization.XmlInclude(typeof(SchematicSettings))]
+
     public abstract class ISettings
     {
-        public abstract string ToString();
+        public abstract override string ToString();
     }
 }

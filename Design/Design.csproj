@@ -107,6 +107,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary1\Binding.csproj">
+      <Project>{4a6283f3-8fad-457f-97fc-6e904f8e5018}</Project>
+      <Name>Binding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Command\Command.csproj">
+      <Project>{ea273989-0917-42dc-97e3-b9ef6b0aa914}</Project>
+      <Name>Command</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SandBox\SandBox.csproj">
       <Project>{faddcf87-2d53-4619-a7e3-5044ffdb0344}</Project>
       <Name>SandBox</Name>

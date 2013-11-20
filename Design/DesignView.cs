@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml.Serialization;
 using PCB.SandBox;
+using PCB.Tools;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -17,54 +18,19 @@ namespace PCB.GUI
 {
     public class DesignView : Form
     {
+        Command selectedCommand;
+
         public DesignView()
         {
             InitializeComponent();
-
-            var mp = new Employee();
-            Stream stream;
-            BinaryFormatter bformatter;
-            mp.EmpId = 456;
-            mp.EmpName = "sdfsdfsdf";
-
-            var ss = new XmlSerializer(typeof(Employee));
-
-            TextWriter tt = new StreamWriter(@"test.xml");
-            ss.Serialize(tt, mp);
-
-            tt.Close();
-            /*
-            stream = File.Open("EmployeeInfo.osl", FileMode.Create);
-            bformatter = new BinaryFormatter();
-
-            Console.WriteLine("Writing Employee Information");
-            bformatter.Serialize(stream, mp);
-            stream.Close();
-
-            Console.ReadLine();
-
-            mp = null;
-
-            //Open the file written above and read values from it.
-            stream = File.Open("EmployeeInfo.osl", FileMode.Open);
-            bformatter = new BinaryFormatter();
-
-            Console.WriteLine("Reading Employee Information");
-            mp = (Employee)bformatter.Deserialize(stream);
-            stream.Close();
-            */
-            mp = null;
-
-            FileStream read = new FileStream(@"test.xml",FileMode.Open,FileAccess.Read,FileShare.Read);
-
-            mp = (ss.Deserialize(read)) as Employee;
-
-            Console.WriteLine("Employee Id: {0}", mp.EmpId.ToString());
-            Console.WriteLine("Employee Name: {0}", mp.EmpName);
-
+            selectedCommand = new NullCommand();
+            //attach even handles to the currently selected tool
+            m_designRenderer.MouseClick += selectedCommand.OnMouseClick;
+            m_designRenderer.MouseDown += selectedCommand.OnMouseDown;
+            m_designRenderer.MouseMove += selectedCommand.OnMouseMove;
         }
 
-        private Button _button;
+        private Button button1;
 
         // Required designer variable.
         private System.ComponentModel.IContainer components = null;
@@ -87,34 +53,35 @@ namespace PCB.GUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.renderControl = new SharpDX.Windows.RenderControl();
-            this._button = new System.Windows.Forms.Button();
+            this.m_designRenderer = new SharpDX.Windows.RenderControl();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // renderControl
+            // m_designRenderer
             // 
-            this.renderControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.renderControl.Location = new System.Drawing.Point(113, 42);
-            this.renderControl.Name = "renderControl";
-            this.renderControl.Size = new System.Drawing.Size(475, 335);
-            this.renderControl.TabIndex = 1;
+            this.m_designRenderer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.m_designRenderer.Location = new System.Drawing.Point(113, 42);
+            this.m_designRenderer.Name = "m_designRenderer";
+            this.m_designRenderer.Size = new System.Drawing.Size(475, 335);
+            this.m_designRenderer.TabIndex = 1;
             // 
             // button1
             // 
-            this._button.Location = new System.Drawing.Point(264, 416);
-            this._button.Name = "button1";
-            this._button.Size = new System.Drawing.Size(75, 23);
-            this._button.TabIndex = 2;
-            this._button.Text = "button1";
-            this._button.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(441, 397);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // DesignView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(727, 460);
-            this.Controls.Add(this._button);
-            this.Controls.Add(this.renderControl);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.m_designRenderer);
             this.Name = "DesignView";
             this.Text = "DesignView";
             this.ResumeLayout(false);
@@ -123,6 +90,17 @@ namespace PCB.GUI
 
         #endregion
 
-        private SharpDX.Windows.RenderControl renderControl;
+        private SharpDX.Windows.RenderControl m_designRenderer;
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            m_designRenderer.MouseClick -= selectedCommand.OnMouseClick;
+            m_designRenderer.MouseDown -= selectedCommand.OnMouseDown;
+            m_designRenderer.MouseMove -= selectedCommand.OnMouseMove;
+            selectedCommand = new Draw();
+            m_designRenderer.MouseClick += selectedCommand.OnMouseClick;
+            m_designRenderer.MouseDown += selectedCommand.OnMouseDown;
+            m_designRenderer.MouseMove += selectedCommand.OnMouseMove;
+        }
     }
 }

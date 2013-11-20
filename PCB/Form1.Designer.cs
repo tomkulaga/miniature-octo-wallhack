@@ -1,6 +1,6 @@
 ﻿namespace PCB
 {
-    partial class DesignView
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -28,31 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.renderControl = new SharpDX.Windows.RenderControl();
-            this.SuspendLayout();
-            // 
-            // renderControl
-            // 
-            this.renderControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.renderControl.Location = new System.Drawing.Point(113, 42);
-            this.renderControl.Name = "renderControl";
-            this.renderControl.Size = new System.Drawing.Size(475, 335);
-            this.renderControl.TabIndex = 1;
-            // 
-            // DesignView
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(727, 460);
-            this.Controls.Add(this.renderControl);
-            this.Name = "DesignView";
-            this.Text = "DesignView";
-            this.ResumeLayout(false);
-
+            this.Text = "Form1";
         }
 
         #endregion
-
-        private SharpDX.Windows.RenderControl renderControl;
     }
 }

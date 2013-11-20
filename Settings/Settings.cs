@@ -8,6 +8,8 @@ using PCB.Settings.Interfaces;
 
 namespace PCB.Settings
 {
+    [Serializable()]
+
     public class Settings
     {
 
@@ -30,23 +32,40 @@ namespace PCB.Settings
     };
 
     //Each of the subclasses will recursively add its settings to the main dictionary
-    internal class PcbSettings : ISettings
-    {
-        
-    }
+    [Serializable()]
 
-    internal class FileSettings : ISettings
+    public class PcbSettings : ISettings
     {
-        
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
+    [Serializable()]
 
-    internal class SchematicSettings : ISettings
+    public class FileSettings : ISettings
     {
-        
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
+    [Serializable()]
 
-    internal class GeneralSettings : ISettings
+    public class SchematicSettings : ISettings
     {
-        
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    [Serializable()]
+
+    public class GeneralSettings : ISettings
+    {
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

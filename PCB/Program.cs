@@ -51,7 +51,7 @@ namespace PCB
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DesignView());
+            Application.Run(new Form1());
 #if DEBUG
             NativeMethods.FreeConsole();
 #endif

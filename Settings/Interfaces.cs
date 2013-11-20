@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace PCB.Settings.Interfaces
 {
-    public interface ISettings
+    [Serializable()]
+    [System.Xml.Serialization.XmlInclude(typeof(PcbSettings))]
+    [System.Xml.Serialization.XmlInclude(typeof(FileSettings))]
+    [System.Xml.Serialization.XmlInclude(typeof(GeneralSettings))]
+    [System.Xml.Serialization.XmlInclude(typeof(SchematicSettings))]
+    public abstract class ISettings
     {
-        string ToString();
+        public abstract string ToString();
     }
 }

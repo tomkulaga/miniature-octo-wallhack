@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="DesignView Will contain only the visual elements">
+    <Position X="14.094" Y="2.438" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="DesignViewRenderer will handle all of the rendering of the design">
+    <Position X="4.979" Y="8.927" Height="0.75" Width="1.7" />
+  </Comment>
+  <Comment CommentText="DesignView will host a SharpDX render control whose Paint will be plugged into DesignView Renderer">
+    <Position X="13.427" Y="8" Height="0.802" Width="2.283" />
+  </Comment>
+  <Comment CommentText="Design View Renderer will draw the design">
+    <Position X="9.75" Y="5.25" Height="0.75" Width="1.7" />
+  </Comment>
+  <Class Name="PCB.Designs.Design">
+    <Position X="5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Design.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCB.Designs.DesignHandler">
+    <Position X="8" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DesignHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PCB.Designs.DesignViewRenderer">
+    <Position X="5" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAgAAAAAAIgAAAAAEAACAABAqAAA=</HashCode>
+      <FileName>DesignViewRenderer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Design" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PCB.GUI.DesignView">
+    <Position X="11.5" Y="2.5" Width="2" />
+    <NestedTypes>
+      <Delegate Name="PCB.GUI.DesignView.mouserrClick" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DesignView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAAAACAAACDBAgCACAIAAIAAEAABQAAAAA=</HashCode>
+      <FileName>DesignView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DesignViewRenderer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PCB.Designs.DesignItem">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAQEAIIBAAAACAAAAQAAAABAAAAgAA=</HashCode>
+      <FileName>DesignItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

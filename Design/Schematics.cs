@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PCB.Design
+namespace PCB.Designs
 {/*
     class Schematics
     {
@@ -62,7 +62,7 @@ namespace PCB.Design
 
     };
 
-    class Pin : DesignItem
+    class Pin : List
     {
         Point tom;
     };

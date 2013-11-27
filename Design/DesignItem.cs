@@ -11,53 +11,85 @@ namespace PCB.Designs
 {
     public abstract class DesignItem
     {
+        //PUBLIC Methods
 
-        //Ctor 
-        public DesignItem()
+        //Ctor default
+        protected DesignItem()
         {
 
         }
 
         //Ctor
-        public DesignItem(Point _location, int id = -1)
+        protected DesignItem(Point location)
         {
+            Location = location;
         }
 
-        //Get the location of the schemItem
-        public Point Location { get; set; }
+        //Id of the item
+        public int ItemId
+        {
+            get { return m_itemId; }
+            set { m_itemId = value; }
+        }
 
-        //each design item will also provide its location relative to the parent
-        //that holds it
-        public Point getLocationRelativeToContainer()
+        //each design item will also provide its location relative to the parent that holds it
+        public Point GetLocationRelativeToContainer()
         {
             return Location;
         }
 
         //Set the location of the schemItem
-        void setLocation(Point location) { }
+        void SetLocation(Point location) { }
 
         //Every Design item will be able to print a string to describe itself
-        public abstract String toString();
+        public override abstract String ToString();
 
         //Every Design item will be able to print a string to describe itself
         //Provides info on location as well
-        public abstract String toStringVerbose();
+        public abstract String ToStringVerbose();
+        #region Properties
+        //Get the location of the schemItem
+        public Point Location
+        {
+            get
+            {
+                return m_location;
+            }
+            set
+            {
+                m_location = value;
+            }
+        }
 
+        //whether the item will be display on screen, different
+        public bool Visible
+        {
+            get { return m_visible; }
+            set { m_visible = value; }
+        }
 
+        //whether the item is displayable on screen
+        public bool Printable
+        {
+            get { return m_printable; }
+        }
+        #endregion
+        #region ProtectedMembers
         //identifier TODO: maybe allocate form global pool?
-        private int m_itemId;
+        protected int m_itemId;
 
         //location of the List relative to the Design that is in
-        Point m_location;
+        protected Point m_location;
 
         //the design that this item is in, all DesignItems need to be in a design!
-        Design m_container = null;
+        protected Design m_container = null;
 
-        //whether the item will be display on screen, differnet
-        bool m_visible = true;
+        //whether the item will be display on screen, different
+        private bool m_visible = true;
 
         //whether the item is displayable on screen
         //most are so default is true
-        bool m_printableItem = true;
+        private bool m_printable = true;
+        #endregion
     }
 }

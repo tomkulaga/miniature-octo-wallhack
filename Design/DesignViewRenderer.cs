@@ -14,84 +14,103 @@ using SharpDX.DXGI;
 
 using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Color = SharpDX.Color;
-using Factory = SharpDX.Direct2D1.Factory;
+using D2D1Factory = SharpDX.Direct2D1.Factory;
 using FontStyle = SharpDX.DirectWrite.FontStyle;
 using D2D = SharpDX.Direct2D1;
 using Point = SharpDX.Point;
 namespace PCB.Designs
 {
-    class DesignViewRenderer
+    public class DesignViewRenderer
     {
 
         //Ctor
         public DesignViewRenderer()
         {
-            Resources = new RendererResources();
+            itemOffsetY = 0;
+            itemOffsetX = 0;
+            zoomLevel = 1;
         }
 
-        //PRIVATE members
-        private Design m_design;
-        Command m_selectedCommand;
-        private SharpDX.Direct2D1.Factory m_factory2D;
-
-        public SharpDX.DirectWrite.Factory m_factoryDWrite;
-
-        public SolidColorBrush SceneColorBrush { get; set; }
-
-        public SolidColorBrush SceneColorBrush1 { get; set; }
-        internal Design Design
+        public Command selectedCommand
         {
             get
             {
-                throw new System.NotImplementedException();
+                return m_selectedCommand;
             }
             set
             {
+                m_selectedCommand = value;
             }
         }
 
-        void InitRenderer()
+        //PRIVATE members
+
+        private SolidColorBrush _blackBrush;
+        private SolidColorBrush _redBrush;
+        private SolidColorBrush _faintBlackBrush;
+
+        private void CreateBrushes()
         {
-            Resources.Factory2D = new SharpDX.Direct2D1.Factory();
-            FactoryDWrite = new SharpDX.DirectWrite.Factory();
-
-            var properties = new HwndRenderTargetProperties();
-            properties.Hwnd = m_designRenderer.Handle;
-            properties.PixelSize = new Size2(m_designRenderer.ClientSize.Width, m_designRenderer.ClientSize.Height);
-            properties.PresentOptions = PresentOptions.None;
-
-            RenderTarget2D = new WindowRenderTarget(Factory2D, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)), properties);
-            RenderTarget2D.AntialiasMode = AntialiasMode.PerPrimitive;
-            RenderTarget2D.TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode.Cleartype;
-
-            SceneColorBrush = new SolidColorBrush(RenderTarget2D, Color.Black);
+            _blackBrush = new SolidColorBrush(RenderTarget2D, Color4.Black);
+            _redBrush = new SolidColorBrush(RenderTarget2D, new Color4(1,0,0,1));
+            _faintBlackBrush = new SolidColorBrush(RenderTarget2D, new Color4(0, 0, 0, (float)0.3));
+            m_sceneColorBrush = new SolidColorBrush(RenderTarget2D, Color4.Black);
         }
 
-        void RenderControlPaint(object sender, PaintEventArgs e)
+        D2D1Factory m_factory2D;
+
+        SolidColorBrush m_sceneColorBrush;
+
+
+        public void InitRenderer(Control controlToPaint)
+        {
+            m_factory2D = new D2D1Factory();
+
+            var properties = new HwndRenderTargetProperties
+            {
+                Hwnd = controlToPaint.Handle,
+                PixelSize = new Size2(controlToPaint.ClientSize.Width, controlToPaint.ClientSize.Height),
+                PresentOptions = PresentOptions.None
+            };
+
+            RenderTarget2D = new WindowRenderTarget(m_factory2D, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)), properties)
+            {
+                AntialiasMode = AntialiasMode.PerPrimitive,
+                TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode.Cleartype
+            };
+
+            
+            CreateBrushes();
+        }
+
+        public void RenderControlPaint(object sender, PaintEventArgs e)
         {
             var tom = new D2D.Brush(new IntPtr());
 
             try
             {
-                Resources.BeginDraw();
+                RenderTarget2D.BeginDraw();
 
                 RenderTarget2D.Clear(Color.White);
 
+                RenderTarget2D.Transform = Matrix3x2.Identity;
 
-                for (UInt32 i = 0; i < 200; i += 10)
+                for (var i = -2000; i < 2000; i += 10)
                 {
                     RenderTarget2D.DrawLine(
-                        new Vector2(0.0f + (200 * i), 0f),
-                        new Vector2(0 + (200 * i), RenderTarget2D.Size.Height),
-                        new SolidColorBrush(RenderTarget2D, Color.Black)
+                        new Vector2(0.0f + (1 * i), 0f),
+                        new Vector2(0 + (1 * i), RenderTarget2D.Size.Height),
+                        _faintBlackBrush
                         );
 
                     RenderTarget2D.DrawLine(
-                        new Vector2(0f, 0.0f + (200 * i)),
-                        new Vector2(RenderTarget2D.Size.Width, 0 + (200 * i)),
-                        new SolidColorBrush(RenderTarget2D, Color.Black)
+                        new Vector2(0f, 0.0f + (1 * i)),
+                        new Vector2(RenderTarget2D.Size.Width, 0 + (1 * i)),
+                        _faintBlackBrush
                         );
                 }
+
+                RenderTarget2D.Transform = Matrix3x2.Scaling(zoomLevel,zoomLevel) * Matrix3x2.Translation(itemOffsetX, itemOffsetY);
 
                 var size = this.RenderTarget2D.Size;
                 var width = (float)((size.Width / 3.0));
@@ -101,12 +120,18 @@ namespace PCB.Designs
                 {
                     ellipses.Add(new D2D.Ellipse(new Vector2(size.Width / 2.0f + i * 2, size.Height / 2.0f + i * 2), width, size.Height / 3.0f));
                 }
-                //var ellipse = new D2D.Ellipse(new D2D.Point2F(size.Width / 2.0f, size.Height / 2.0f), width, size.Height / 3.0f);
+    
 
-                // This draws the ellipse in red on a semi-transparent blue background
-
-                for (Int32 i = 0; i < 3000; i++)
+                for (var i = 0; i < 3000; i++)
                 {
+                    if (i == 10)
+                    {
+                        RenderTarget2D.Transform = Matrix3x2.Scaling(zoomLevel, zoomLevel) * Matrix3x2.Translation(singleItemX, singleItemY); ;
+                    }
+                    else if (i == 11)
+                    {
+                        RenderTarget2D.Transform =  Matrix3x2.Scaling(zoomLevel, zoomLevel) * Matrix3x2.Translation(itemOffsetX, itemOffsetY); ;
+                    }
                     this.RenderTarget2D.FillEllipse(ellipses[i], new SolidColorBrush(RenderTarget2D, Color.IndianRed));
                     //ellipses.Add(new D2D.Ellipse(new D2D.Point2F(size.Width / 2.0f, size.Height / 2.0f), width, size.Height / 3.0f));
                 }
@@ -115,13 +140,46 @@ namespace PCB.Designs
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show((ex.ToString()));
             }
         }
+
+        public float zoomLevel { get; set; }
+
+        public float singleItemY { get; set; }
+
+        public float singleItemX { get; set; }
+
+        public float itemOffsetY { get; set; }
+
+        public float itemOffsetX { get; set; }
 
         public void Paint(object sender, PaintEventArgs e)
         {
             throw new System.NotImplementedException();
         }
+
+        public void attachRenderTarget(Object renderTarget)
+        {
+
+        }
+
+        public void removeRenderTarget()
+        {
+           
+        }
+
+        #region Protected Members
+
+        private Command m_selectedCommand;
+
+        //The actual design that is rendered, this will be filled in with a concrete design
+        //i.e. Schematic, PCB, Library (schematic or PCB)
+        private Design m_design;
+        private WindowRenderTarget RenderTarget2D;
+
+
+
+        #endregion
     }
 }

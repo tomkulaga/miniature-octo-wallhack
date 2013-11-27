@@ -15,7 +15,7 @@
   <Class Name="PCB.Designs.Design">
     <Position X="5" Y="2.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Design.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -29,11 +29,11 @@
   <Class Name="PCB.Designs.DesignViewRenderer">
     <Position X="5" Y="5.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAgAAAAAAIgAAAAAEAACAABAqAAA=</HashCode>
+      <HashCode>AQAAAAAABAAAAAAAAhAAAAAAAgAAAAAAAAAAgBAoAAA=</HashCode>
       <FileName>DesignViewRenderer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Design" />
+      <Property Name="selectedCommand" />
     </ShowAsAssociation>
   </Class>
   <Class Name="PCB.GUI.DesignView">
@@ -46,19 +46,20 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAgAAAACAAAACAAACDBAgCACAIAAIAAEAABQAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAACAAACBBAgCACAIAAIAAQAAAAAAgAA=</HashCode>
       <FileName>DesignView.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="DesignViewRenderer" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="PCB.Designs.DesignItem">
-    <Position X="0.5" Y="0.5" Width="2.5" />
+    <Position X="1.75" Y="2.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAAAAAAQEAIIBAAAACAAAAQAAAABAAAAgAA=</HashCode>
+      <HashCode>AACgAAAAAAAAAAAUkAIIAQAAAAAAAAQoAAAAAAAAAAA=</HashCode>
       <FileName>DesignItem.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="PCB.Tools.Command" Collapsed="true">
+    <Position X="9.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

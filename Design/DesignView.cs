@@ -18,7 +18,7 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.DXGI;
-
+using SharpDX.Windows;
 using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Color = SharpDX.Color;
 using Factory = SharpDX.Direct2D1.Factory;
@@ -36,41 +36,45 @@ namespace PCB.GUI
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem toolToolStripMenuItem;
         private ToolStripComboBox toolStripComboBox1;
-        private SharpDX.Windows.RenderControl m_designRenderer;
+        private RenderControl m_controlToPaint;
         private Button button1;
+        private DesignViewRenderer renderer;
         Design designBehind;
+        private bool keyDown = false;
 
         Point mouseCoords;
-        
+
+        private double[] zoomLevels = { 0.4, 0.6, 0.7, 0.8, 0.9, 1, 1.2, 1.3, 1.4, 1.5, 1.6 };
+        private int selectedZoom = 5;
         public delegate void mouserrClick(object o, MouseEventArgs e);
+
         public DesignView()
         {
             InitializeComponent();
-            selectedCommand = new NullCommand();
+            renderer = new DesignViewRenderer { selectedCommand = new PanCommand() };
+            renderer.InitRenderer(m_controlToPaint);
             //attach even handles to the currently selected tool
             //m_designRenderer.MouseClick += m_selectedCommand.OnMouseClick;
-            m_designRenderer.MouseDown += selectedCommand.OnMouseDown;
-            m_designRenderer.MouseMove += selectedCommand.OnMouseMove;
-            tom = selectedCommand.OnMouseClick;
-             m_designRenderer.MouseClick += new MouseEventHandler(tom);
+            /*
+            m_controlToPaint.MouseDown += renderer.selectedCommand.OnMouseDown;
+            m_controlToPaint.MouseMove += renderer.selectedCommand.OnMouseMove;
 
+             m_controlToPaint.MouseUp += renderer.selectedCommand.OnMouseUp;
+            */
+            m_controlToPaint.Paint += renderer.RenderControlPaint;
+            m_controlToPaint.MouseWheel += m_controlToPaint_MouseWheel;
 
-             InitDirect2DAndDirectWrite();
-             m_designRenderer.Paint += RenderControlPaint;
-             m_designRenderer.MouseMove += selectedCommand.OnMouseMove;
-     
         }
 
         //private member Functions
-        private void refreshList()
-        {
-
-        }
 
         // Required designer variable.
         private System.ComponentModel.IContainer components = null;
+        private bool panning;
+        private int mouseDownX = 0;
+        private int mouseDownY = 0;
 
-    
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -92,7 +96,7 @@ namespace PCB.GUI
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.m_designRenderer = new SharpDX.Windows.RenderControl();
+            this.m_controlToPaint = new SharpDX.Windows.RenderControl();
             this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -117,32 +121,34 @@ namespace PCB.GUI
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
             // 
-            // m_designRenderer
+            // m_controlToPaint
             // 
-            this.m_designRenderer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.m_designRenderer.Location = new System.Drawing.Point(12, 12);
-            this.m_designRenderer.Name = "m_designRenderer";
-            this.m_designRenderer.Size = new System.Drawing.Size(475, 335);
-            this.m_designRenderer.TabIndex = 1;
-            this.m_designRenderer.Load += new System.EventHandler(this.m_designRenderer_Load);
+            this.m_controlToPaint.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.m_controlToPaint.Location = new System.Drawing.Point(12, 12);
+            this.m_controlToPaint.Name = "m_controlToPaint";
+            this.m_controlToPaint.Size = new System.Drawing.Size(1265, 664);
+            this.m_controlToPaint.TabIndex = 1;
+            this.m_controlToPaint.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_controlToPaint_KeyDown);
+            this.m_controlToPaint.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_controlToPaint_MouseDown);
+            this.m_controlToPaint.MouseMove += new System.Windows.Forms.MouseEventHandler(this.m_controlToPaint_MouseMove);
+            this.m_controlToPaint.MouseUp += new System.Windows.Forms.MouseEventHandler(this.m_controlToPaint_MouseUp);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 353);
+            this.button1.Location = new System.Drawing.Point(12, 682);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // DesignView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(506, 415);
+            this.ClientSize = new System.Drawing.Size(1289, 717);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.m_designRenderer);
+            this.Controls.Add(this.m_controlToPaint);
             this.Name = "DesignView";
             this.Text = "DesignView";
             this.contextMenuStrip1.ResumeLayout(false);
@@ -152,27 +158,67 @@ namespace PCB.GUI
 
         #endregion
 
-        
-
-        private void button1_Click(object sender, EventArgs e)
+        private void m_controlToPaint_MouseDown(object sender, MouseEventArgs e)
         {
+            if (!keyDown)
+            {
+                panning = true;
+            }
 
-            selectedCommand = new Draw();
-            tom = new mouserrClick(selectedCommand.OnMouseClick);
+            mouseDownX = e.X;
+            mouseDownY = e.Y;
         }
 
-        private int m_renderer;
-
-        internal PCB.Designs.DesignViewRenderer DesignViewRenderer
+        private void m_controlToPaint_MouseUp(object sender, MouseEventArgs e)
         {
-            get
+            panning = false;
+            keyDown = false;
+        }
+
+        private void m_controlToPaint_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (keyDown)
             {
-                throw new System.NotImplementedException();
+                renderer.singleItemX = e.X - mouseDownX;
+                renderer.singleItemY = e.Y - mouseDownY;
+
             }
-            set
+            else if(panning)
             {
+
+                renderer.itemOffsetX = e.X - mouseDownX;
+                renderer.itemOffsetY = e.Y - mouseDownY;
+            }
+
+            m_controlToPaint.Refresh();
+
+        }
+
+        private void m_controlToPaint_MouseWheel(object sender, MouseEventArgs e)
+        {
+
+            selectedZoom += e.Delta / 120;
+
+            if (selectedZoom == zoomLevels.Length)
+            {
+                selectedZoom = zoomLevels.Length - 1;
+            }
+            else if (selectedZoom < 0)
+            {
+                selectedZoom = 0;
+            }
+            renderer.zoomLevel = (float)zoomLevels[selectedZoom];
+            m_controlToPaint.Refresh();
+        }
+
+        private void m_controlToPaint_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.G)
+            {
+                keyDown = true;
             }
         }
+
 
     }
 }

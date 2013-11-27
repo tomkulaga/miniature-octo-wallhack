@@ -19,6 +19,7 @@ namespace PCB.Tools
         public abstract void OnMouseDown(object o, MouseEventArgs e);
         public abstract void OnMouseMove(object o, MouseEventArgs e);
         public abstract void OnMouseClick(object o, MouseEventArgs e);
+        public abstract void OnMouseUp(object sender, MouseEventArgs e);
     }
 
     public class NullCommand : Command
@@ -35,6 +36,31 @@ namespace PCB.Tools
         {
 
         }
+
+        public override void OnMouseUp(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class PanCommand : Command
+    {
+        public override void OnMouseDown(object o, MouseEventArgs e)
+        {
+            Console.WriteLine("hey");
+        }
+        public override void OnMouseMove(object o, MouseEventArgs e)
+        {
+
+        }
+        public override void OnMouseClick(object o, MouseEventArgs e)
+        {
+
+        }
+
+        public override void OnMouseUp(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class Draw : Command
     {
@@ -49,6 +75,11 @@ namespace PCB.Tools
         public override void OnMouseClick(object o, MouseEventArgs e)
         {
 
+        }
+
+        public override void OnMouseUp(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

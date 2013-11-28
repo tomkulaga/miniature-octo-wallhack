@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Xml.Serialization;
+using Design.Annotations;
 using PCB.SandBox;
 using PCB.Tools;
 using PCB.Designs;
@@ -26,9 +28,10 @@ using FontStyle = SharpDX.DirectWrite.FontStyle;
 using D2D = SharpDX.Direct2D1;
 using Point = SharpDX.Point;
 
+
 namespace PCB.GUI
 {
-    public class DesignView : Form
+    public class DesignView : Form, INotifyPropertyChanged
     {
         mouserrClick tom;
 
@@ -39,12 +42,18 @@ namespace PCB.GUI
         private RenderControl m_controlToPaint;
         private Button button1;
         private DesignViewRenderer renderer;
-        Design designBehind;
+        PCB.Designs.Design designBehind;
         private bool keyDown = false;
 
         Point mouseCoords;
 
         private double[] zoomLevels = { 0.4, 0.6, 0.7, 0.8, 0.9, 1, 1.2, 1.3, 1.4, 1.5, 1.6 };
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel _lblToolStripCommand;
+        private ToolStripDropDownButton toolStripDropDownButton1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripProgressBar toolStripProgressBar1;
+        private MenuStrip menuStrip1;
         private int selectedZoom = 5;
         public delegate void mouserrClick(object o, MouseEventArgs e);
 
@@ -69,7 +78,7 @@ namespace PCB.GUI
         //private member Functions
 
         // Required designer variable.
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
         private bool panning;
         private int mouseDownX = 0;
         private int mouseDownY = 0;
@@ -93,12 +102,20 @@ namespace PCB.GUI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DesignView));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.m_controlToPaint = new SharpDX.Windows.RenderControl();
             this.button1 = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this._lblToolStripCommand = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.contextMenuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -124,7 +141,7 @@ namespace PCB.GUI
             // m_controlToPaint
             // 
             this.m_controlToPaint.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.m_controlToPaint.Location = new System.Drawing.Point(12, 12);
+            this.m_controlToPaint.Location = new System.Drawing.Point(0, 27);
             this.m_controlToPaint.Name = "m_controlToPaint";
             this.m_controlToPaint.Size = new System.Drawing.Size(1265, 664);
             this.m_controlToPaint.TabIndex = 1;
@@ -135,24 +152,79 @@ namespace PCB.GUI
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 682);
+            this.button1.Location = new System.Drawing.Point(396, 695);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(128, 13);
             this.button1.TabIndex = 2;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._lblToolStripCommand,
+            this.toolStripDropDownButton1,
+            this.toolStripProgressBar1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 711);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1289, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // _lblToolStripCommand
+            // 
+            this._lblToolStripCommand.Name = "_lblToolStripCommand";
+            this._lblToolStripCommand.Size = new System.Drawing.Size(130, 17);
+            this._lblToolStripCommand.Text = "No Command Selected";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
+            this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1289, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
             // 
             // DesignView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1289, 717);
+            this.ClientSize = new System.Drawing.Size(1289, 733);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.m_controlToPaint);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "DesignView";
             this.Text = "DesignView";
             this.contextMenuStrip1.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -219,6 +291,29 @@ namespace PCB.GUI
             }
         }
 
+        private void updateControlSelectedLabel(string control)
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                _lblToolStripCommand.Text = control;
+            }));
+        }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                updateControlSelectedLabel("greckles");
+            });
+        }
     }
 }

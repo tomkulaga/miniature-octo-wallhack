@@ -12,7 +12,7 @@ namespace PCB.Tools
 {
     public abstract class Command
     {
-        public Command()
+        protected Command()
         {
 
         }
@@ -20,6 +20,11 @@ namespace PCB.Tools
         public abstract void OnMouseMove(object o, MouseEventArgs e);
         public abstract void OnMouseClick(object o, MouseEventArgs e);
         public abstract void OnMouseUp(object sender, MouseEventArgs e);
+
+        public virtual void OnSelectCommand(object sender, PropertyChangedEventArgs e)
+        {
+            
+        }
     }
 
     public class NullCommand : Command

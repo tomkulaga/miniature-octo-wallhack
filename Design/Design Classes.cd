@@ -7,7 +7,7 @@
     <Position X="4.979" Y="8.927" Height="0.75" Width="1.7" />
   </Comment>
   <Comment CommentText="DesignView will host a SharpDX render control whose Paint will be plugged into DesignView Renderer">
-    <Position X="13.427" Y="8" Height="0.802" Width="2.283" />
+    <Position X="13.937" Y="7.958" Height="0.802" Width="2.283" />
   </Comment>
   <Comment CommentText="Design View Renderer will draw the design">
     <Position X="9.75" Y="5.25" Height="0.75" Width="1.7" />
@@ -29,7 +29,7 @@
   <Class Name="PCB.Designs.DesignViewRenderer">
     <Position X="5" Y="5.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAABAAAAAAAAhAAAAAAAgAAAAAAAAAAgBAoAAA=</HashCode>
+      <HashCode>AQAAAAAGBAABAAAAAhIqAAAAAgAEAIAACAAAgBAoAAA=</HashCode>
       <FileName>DesignViewRenderer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -46,9 +46,10 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAACAAACBBAgCACAIAAIAAQAAAAAAgAA=</HashCode>
+      <HashCode>AAAAAAgAIDhAAQCEIICBBAgCgKBIAAIAABABACAAgAE=</HashCode>
       <FileName>DesignView.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="PCB.Designs.DesignItem">
     <Position X="1.75" Y="2.75" Width="2.5" />

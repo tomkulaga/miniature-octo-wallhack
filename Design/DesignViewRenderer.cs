@@ -18,6 +18,8 @@ using D2D1Factory = SharpDX.Direct2D1.Factory;
 using FontStyle = SharpDX.DirectWrite.FontStyle;
 using D2D = SharpDX.Direct2D1;
 using Point = SharpDX.Point;
+
+
 namespace PCB.Designs
 {
     public class DesignViewRenderer

@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml.Serialization;
 using Design.Annotations;
-using PCB.SandBox;
 using PCB.Tools;
 using PCB.Designs;
 using System.Runtime.Serialization;
@@ -33,21 +32,18 @@ namespace PCB.GUI
 {
     public class DesignView : Form, INotifyPropertyChanged
     {
-        mouserrClick tom;
-
-        List<String> teest = new List<string>();
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem toolToolStripMenuItem;
         private ToolStripComboBox toolStripComboBox1;
         private RenderControl m_controlToPaint;
         private Button button1;
-        private DesignViewRenderer renderer;
+        private readonly DesignViewRenderer renderer;
         PCB.Designs.Design designBehind;
         private bool keyDown = false;
 
         Point mouseCoords;
 
-        private double[] zoomLevels = { 0.4, 0.6, 0.7, 0.8, 0.9, 1, 1.2, 1.3, 1.4, 1.5, 1.6 };
+        private readonly double[] zoomLevels = { 0.4, 0.6, 0.7, 0.8, 0.9, 1, 1.2, 1.3, 1.4, 1.5, 1.6 };
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel _lblToolStripCommand;
         private ToolStripDropDownButton toolStripDropDownButton1;
@@ -55,7 +51,6 @@ namespace PCB.GUI
         private ToolStripProgressBar toolStripProgressBar1;
         private MenuStrip menuStrip1;
         private int selectedZoom = 5;
-        public delegate void mouserrClick(object o, MouseEventArgs e);
 
         public DesignView()
         {
@@ -64,12 +59,7 @@ namespace PCB.GUI
             renderer.InitRenderer(m_controlToPaint);
             //attach even handles to the currently selected tool
             //m_designRenderer.MouseClick += m_selectedCommand.OnMouseClick;
-            /*
-            m_controlToPaint.MouseDown += renderer.selectedCommand.OnMouseDown;
-            m_controlToPaint.MouseMove += renderer.selectedCommand.OnMouseMove;
 
-             m_controlToPaint.MouseUp += renderer.selectedCommand.OnMouseUp;
-            */
             m_controlToPaint.Paint += renderer.RenderControlPaint;
             m_controlToPaint.MouseWheel += m_controlToPaint_MouseWheel;
 
@@ -271,7 +261,7 @@ namespace PCB.GUI
 
             selectedZoom += e.Delta / 120;
 
-            if (selectedZoom == zoomLevels.Length)
+            if (selectedZoom >= zoomLevels.Length)
             {
                 selectedZoom = zoomLevels.Length - 1;
             }
@@ -291,7 +281,7 @@ namespace PCB.GUI
             }
         }
 
-        private void updateControlSelectedLabel(string control)
+        private void UpdateControlSelectedLabel(string control)
         {
             this.Invoke(new MethodInvoker(delegate
             {
@@ -312,7 +302,7 @@ namespace PCB.GUI
         {
             Task.Factory.StartNew(() =>
             {
-                updateControlSelectedLabel("greckles");
+                UpdateControlSelectedLabel("greckles");
             });
         }
     }

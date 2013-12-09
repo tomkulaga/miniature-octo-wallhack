@@ -11,12 +11,14 @@ namespace PCB.Designs
 {
     public abstract class Design
     {
-        //
+        //The design is bascially a collection of design items
         protected ObservableCollection<DesignItem> m_designItemList;
+        
         //name of the design
         protected string m_designName;
+
         //Constructor
-        public Design()
+        protected Design()
         {
             m_designItemList = new ObservableCollection<DesignItem>();
         }

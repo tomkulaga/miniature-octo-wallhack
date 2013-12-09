@@ -54,11 +54,26 @@ namespace PCB.Designs
         private void CreateBrushes()
         {
             _blackBrush = new SolidColorBrush(RenderTarget2D, Color4.Black);
-            _redBrush = new SolidColorBrush(RenderTarget2D, new Color4(1,0,0,1));
+            _redBrush = new SolidColorBrush(RenderTarget2D, new Color4(1, 0, 0, 1));
             _faintBlackBrush = new SolidColorBrush(RenderTarget2D, new Color4(0, 0, 0, (float)0.3));
             m_sceneColorBrush = new SolidColorBrush(RenderTarget2D, Color4.Black);
         }
 
+        private void FreeBrushes()
+        {
+
+        }
+
+
+        private void CreateResources()
+        {
+
+        }
+
+        private void FreeResources()
+        {
+
+        }
         D2D1Factory m_factory2D;
 
         SolidColorBrush m_sceneColorBrush;
@@ -72,16 +87,17 @@ namespace PCB.Designs
             {
                 Hwnd = controlToPaint.Handle,
                 PixelSize = new Size2(controlToPaint.ClientSize.Width, controlToPaint.ClientSize.Height),
-                PresentOptions = PresentOptions.None
+                PresentOptions = PresentOptions.RetainContents
             };
 
             RenderTarget2D = new WindowRenderTarget(m_factory2D, new RenderTargetProperties(new PixelFormat(Format.Unknown, AlphaMode.Premultiplied)), properties)
             {
-                AntialiasMode = AntialiasMode.PerPrimitive,
+                AntialiasMode = AntialiasMode.Aliased,
                 TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode.Cleartype
+               
+                
             };
 
-            
             CreateBrushes();
         }
 
@@ -116,25 +132,36 @@ namespace PCB.Designs
 
                 var size = this.RenderTarget2D.Size;
                 var width = (float)((size.Width / 3.0));
-                var ellipses = new List<D2D.Ellipse>();
-
-                for (var i = 0; i < 3000; i++)
+                var ellipses = new List<RectangleF>();
+                var ellipses2 = new List<Ellipse>();
+                var brush = new SolidColorBrush(RenderTarget2D, Color.IndianRed);
+                var brushE = new SolidColorBrush(RenderTarget2D, Color.Chocolate);
+                for (var i = 0; i < 3000; i+=40)
                 {
-                    ellipses.Add(new D2D.Ellipse(new Vector2(size.Width / 2.0f + i * 2, size.Height / 2.0f + i * 2), width, size.Height / 3.0f));
+                    for (var j = 0; j < 3000; j +=40)
+                    {
+                      ellipses.Add(new RectangleF(i,j,20,20));
+                      ellipses2.Add(new Ellipse(new Vector2(i + 10, j + 10), 10f, 20f));
+                    }
+
                 }
-    
 
-                for (var i = 0; i < 3000; i++)
+
+                for (var i = 0; i < 5625; i++)
                 {
-                    if (i == 10)
+                    switch (i)
                     {
-                        RenderTarget2D.Transform = Matrix3x2.Scaling(zoomLevel, zoomLevel) * Matrix3x2.Translation(singleItemX, singleItemY); ;
+                        case 10:
+                            RenderTarget2D.Transform = Matrix3x2.Scaling(zoomLevel, zoomLevel) * Matrix3x2.Translation(singleItemX, singleItemY);
+                            ;
+                            break;
+                        case 11:
+                            RenderTarget2D.Transform =  Matrix3x2.Scaling(zoomLevel, zoomLevel) * Matrix3x2.Translation(itemOffsetX, itemOffsetY);
+                            ;
+                            break;
                     }
-                    else if (i == 11)
-                    {
-                        RenderTarget2D.Transform =  Matrix3x2.Scaling(zoomLevel, zoomLevel) * Matrix3x2.Translation(itemOffsetX, itemOffsetY); ;
-                    }
-                    this.RenderTarget2D.FillEllipse(ellipses[i], new SolidColorBrush(RenderTarget2D, Color.IndianRed));
+                    this.RenderTarget2D.DrawRectangle(ellipses[i], brush);
+                    this.RenderTarget2D.DrawEllipse(ellipses2[i], brushE);
                     //ellipses.Add(new D2D.Ellipse(new D2D.Point2F(size.Width / 2.0f, size.Height / 2.0f), width, size.Height / 3.0f));
                 }
 
@@ -168,7 +195,7 @@ namespace PCB.Designs
 
         public void removeRenderTarget()
         {
-           
+
         }
 
         #region Protected Members

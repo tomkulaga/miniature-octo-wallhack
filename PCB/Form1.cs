@@ -20,12 +20,12 @@ namespace PCB
     public partial class Form1 : DesignView
     {
 
-        [DllImport("AMP", CallingConvention = CallingConvention.StdCall)]
-        extern unsafe static void square_array(float* array, int length);
+        //[DllImport("AMP", CallingConvention = CallingConvention.StdCall)]
+        //extern unsafe static void square_array(float* array, int length);
 
-        public unsafe Form1()
+        public Form1()
         {
-            InitializeComponent();
+            /*InitializeComponent();
             // Allocate an array
             var arr = new[] { 1.0f, 2.0f, 3.0f, 4.0f };
 
@@ -39,7 +39,7 @@ namespace PCB
             foreach (var x in arr)
             {
                 Console.WriteLine(x);
-            }
+            }*/
 
         }
 

@@ -33,20 +33,17 @@ namespace PCB.Designs
         }
 
         //each design item will also provide its location relative to the parent that holds it
-        public Point GetLocationRelativeToContainer()
-        {
-            return Location;
-        }
+        public abstract Point GetLocationRelativeToContainer();
 
         //Set the location of the schemItem
-        void SetLocation(Point location) { }
+        void SetLocation(Point location)
+        {
+            
+        }
 
         //Every Design item will be able to print a string to describe itself
         public override abstract String ToString();
 
-        //Every Design item will be able to print a string to describe itself
-        //Provides info on location as well
-        public abstract String ToStringVerbose();
         #region Properties
         //Get the location of the schemItem
         public Point Location

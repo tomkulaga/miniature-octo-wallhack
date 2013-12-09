@@ -122,9 +122,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Form1.cs" />
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
@@ -157,10 +155,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\Binding.csproj">
-      <Project>{4a6283f3-8fad-457f-97fc-6e904f8e5018}</Project>
-      <Name>Binding</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ClassLibrary2\Threading.csproj">
       <Project>{e49d27e4-5246-4b33-9cd9-b91b27141e85}</Project>
       <Name>Threading</Name>
@@ -177,9 +171,9 @@
       <Project>{e3d2bcb5-ddb0-4e88-ba8b-fd38700649d5}</Project>
       <Name>FileHandler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SandBox\SandBox.csproj">
-      <Project>{faddcf87-2d53-4619-a7e3-5044ffdb0344}</Project>
-      <Name>SandBox</Name>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{80e10ba0-fb65-4272-8cfe-040f995b45e9}</Project>
+      <Name>Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{f2da5305-f77d-4537-a1a3-b6846a340683}</Project>

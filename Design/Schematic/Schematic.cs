@@ -296,7 +296,7 @@ public:
 	Schematic();
 
 	//Destructor
-	~Schematic() = default;
+	~Schematic() = default; 
 
 	//add a component to the schematic
 	void addSchematicPage(SchematicPage page);

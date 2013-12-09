@@ -16,51 +16,41 @@
     <Position X="5" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Design.cs</FileName>
+      <FileName>Design\Design.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PCB.Designs.DesignHandler">
     <Position X="8" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DesignHandler.cs</FileName>
+      <FileName>Design\DesignHandler.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PCB.Designs.DesignViewRenderer">
     <Position X="5" Y="5.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAGBAABAAAAAhIqAAAAAgAEAIAACAAAgBAoAAA=</HashCode>
-      <FileName>DesignViewRenderer.cs</FileName>
+      <HashCode>AQAAAAIGBAABAAAAAhIqAAAAAoAEAIAACAAAghAoAAA=</HashCode>
+      <FileName>DesignView\DesignViewRenderer.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="selectedCommand" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="PCB.GUI.DesignView">
-    <Position X="11.5" Y="2.5" Width="2" />
-    <NestedTypes>
-      <Delegate Name="PCB.GUI.DesignView.mouserrClick" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>DesignView.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>AAAAAAgAIDhAAQCEIICBBAgCgKBIAAIAABABACAAgAE=</HashCode>
-      <FileName>DesignView.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="PCB.Designs.DesignItem">
     <Position X="1.75" Y="2.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AACgAAAAAAAAAAAUkAIIAQAAAAAAAAQoAAAAAAAAAAA=</HashCode>
-      <FileName>DesignItem.cs</FileName>
+      <HashCode>AAAgAAAAAAAAAAAUkAIIAQAAAAAAAAQoAAAAAAAAAAA=</HashCode>
+      <FileName>Design\DesignItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PCB.Tools.Command" Collapsed="true">
     <Position X="9.25" Y="6.5" Width="1.5" />
     <TypeIdentifier />
+  </Class>
+  <Class Name="PCB.GUI.DesignView">
+    <Position X="11.5" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAACAgAIDhAAQCGIICBAAACgKDKAAIAABABACAAgAE=</HashCode>
+      <FileName>DesignView\DesignView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

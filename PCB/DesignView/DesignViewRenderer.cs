@@ -190,6 +190,11 @@ namespace PCB.Designs
 
         }
 
+        public void AddItem(Point location,Size2 newSize)
+        {
+            itemsToDraw.Add(new RectangleGeometry(m_factory2D, new RectangleF(location.X, location.Y, newSize.Width, newSize.Height)));
+        }
+
         #region Protected Members
 
 

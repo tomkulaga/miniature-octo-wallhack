@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Xml.Serialization;
-using Design.Annotations;
 using PCB.Tools;
 using PCB.Designs;
 using System.Runtime.Serialization;
@@ -30,14 +29,13 @@ using Point = SharpDX.Point;
 
 namespace PCB.GUI
 {
-    public class DesignView : Form, INotifyPropertyChanged
+    public class DesignView : SharpDX.Windows.RenderControl, INotifyPropertyChanged
     {
         protected ContextMenuStrip contextMenuStrip1;
         protected ToolStripMenuItem toolToolStripMenuItem;
         protected ToolStripComboBox toolStripComboBox1;
         protected RenderControl m_controlToPaint;
-        protected Button button1;
-        protected readonly DesignViewRenderer renderer;
+        public readonly DesignViewRenderer renderer;
         PCB.Designs.Design designBehind;
         protected bool keyDown = false;
 
@@ -53,9 +51,10 @@ namespace PCB.GUI
         protected ToolStripMenuItem toolStripMenuItem1;
         protected ToolStripProgressBar toolStripProgressBar1;
         protected MenuStrip menuStrip1;
+        protected Button button1;
         protected int selectedZoom = 5;
 
-        protected DesignView()
+        public DesignView()
         {
             InitializeComponent();
             renderer = new DesignViewRenderer { };
@@ -83,10 +82,11 @@ namespace PCB.GUI
             m_controlToPaint.MouseMove += m_selectedCommand.OnMouseMove;
         }
 
+        private IContainer components;
+
         //private member Functions
 
         // Required designer variable.
-        protected IContainer components = null;
         protected bool panning;
         protected int mouseDownX = 0;
         protected int mouseDownY = 0;
@@ -115,13 +115,13 @@ namespace PCB.GUI
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.m_controlToPaint = new SharpDX.Windows.RenderControl();
-            this.button1 = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this._lblToolStripCommand = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.button1 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -153,19 +153,8 @@ namespace PCB.GUI
             this.m_controlToPaint.Name = "m_controlToPaint";
             this.m_controlToPaint.Size = new System.Drawing.Size(1265, 664);
             this.m_controlToPaint.TabIndex = 1;
-            this.m_controlToPaint.KeyDown += new System.Windows.Forms.KeyEventHandler(this.m_controlToPaint_KeyDown);
-            this.m_controlToPaint.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_controlToPaint_MouseDown);
-            this.m_controlToPaint.MouseMove += new System.Windows.Forms.MouseEventHandler(this.m_controlToPaint_MouseMove);
-            this.m_controlToPaint.MouseUp += new System.Windows.Forms.MouseEventHandler(this.m_controlToPaint_MouseUp);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(396, 695);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(128, 31);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+
+
             // 
             // statusStrip1
             // 
@@ -216,18 +205,25 @@ namespace PCB.GUI
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(396, 695);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(128, 31);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // DesignView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1289, 763);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.m_controlToPaint);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "DesignView";
-            this.Text = "DesignView";
+            this.Size = new System.Drawing.Size(1289, 763);
             this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -237,18 +233,12 @@ namespace PCB.GUI
         }
 
         #endregion
-
+        /*
         protected void m_controlToPaint_MouseDown(object sender, MouseEventArgs e)
         {
-            if (!keyDown)
-            {
-                panning = true;
-            }
-
-            mouseDownX = e.X;
-            mouseDownY = e.Y;
+            this.MouseDown
         }
-
+        
         protected void m_controlToPaint_MouseUp(object sender, MouseEventArgs e)
         {
             panning = false;
@@ -273,7 +263,7 @@ namespace PCB.GUI
             m_controlToPaint.Refresh();
 
         }
-
+        */
         protected void m_controlToPaint_MouseWheel(object sender, MouseEventArgs e)
         {
 
@@ -298,7 +288,7 @@ namespace PCB.GUI
                 keyDown = true;
             }
         }
-
+        
         protected void UpdateControlSelectedLabel(string control)
         {
             this.Invoke(new MethodInvoker(delegate
@@ -309,7 +299,6 @@ namespace PCB.GUI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -322,6 +311,11 @@ namespace PCB.GUI
             {
                 UpdateControlSelectedLabel("greckles");
             });
+        }
+
+        public void AddObject(Point location, Size2 size)
+        {
+            renderer.AddItem(location, size);
         }
     }
 }

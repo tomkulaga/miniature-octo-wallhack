@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PCB.GUI;
+using SharpDX;
 using D2D = SharpDX.Direct2D1;
+using SharpDX;
 
 namespace PCB.Tools
 {
@@ -63,12 +66,12 @@ namespace PCB.Tools
 
         public void OnMouseUp(object sender, MouseEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnSelectCommand(object sender, PropertyChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
     public class Draw : ICommand
@@ -99,16 +102,13 @@ namespace PCB.Tools
 
     public class AddComponent : ICommand
     {
-        private List<D2D.Geometry> itemsToAddTo;
 
-        public AddComponent(List<D2D.Geometry> items)
-        {
-            itemsToAddTo = items;
-        }
 
         public void OnMouseDown(object o, MouseEventArgs e)
         {
-            Console.WriteLine("Crazy");
+            //var list = (o as Form1).renderer.itemsToDraw;
+            var rc = (DesignView) o;
+            rc.AddObject(new SharpDX.Point(e.X,e.Y), new SharpDX.Size2(100,100) );
         }
         public void OnMouseMove(object o, MouseEventArgs e)
         {
@@ -121,12 +121,10 @@ namespace PCB.Tools
 
         public void OnMouseUp(object sender, MouseEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         public void OnSelectCommand(object sender, PropertyChangedEventArgs e)
         {
-            throw new NotImplementedException();
         }
     }
 }

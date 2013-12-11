@@ -116,12 +116,6 @@
     <Compile Include="Schematic\Text.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Command\Command.csproj">
-      <Project>{ea273989-0917-42dc-97e3-b9ef6b0aa914}</Project>
-      <Name>Command</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Design Classes.cd" />
   </ItemGroup>
   <ItemGroup>
